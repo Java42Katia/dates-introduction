@@ -2,8 +2,14 @@ package telran.util.time;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +40,7 @@ class DateTimeTests {
 	@Test
 	void testNextFriday13Adjuster() {
 		assertEquals(LocalDate.parse("2022-05-13"), LocalDate.parse("2021-12-22").with(new NextFriday13Adjuster()));
+		assertEquals(LocalDate.parse("2023-01-13"), LocalDate.parse("2022-05-13").with(new NextFriday13Adjuster()));
 	}
 	@Test
 	void testGetAge() {
@@ -46,8 +53,34 @@ class DateTimeTests {
 	}
 
 	private int getAgeAtDate(LocalDate birthDate, LocalDate atDate) {
-		// TODO Auto-generated method stub
-		return (int) ChronoUnit.YEARS.between(birthDate, atDate);
+		return (int)ChronoUnit.YEARS.between(birthDate, atDate);
+	}
+	@Test
+	void timingTest() {
+		ChronoUnit chronoUnit = ChronoUnit.MONTHS;
+		System.out.printf("time  between %s and %s is %d %s \n",
+				birthAS, LocalDate.now(), chronoUnit.between(birthAS, LocalDate.now()), chronoUnit);
+		Period period = Period.between(birthAS, LocalDate.now());
+		System.out.printf("between %s and %s there are years %d, months %d, days %d\n",
+				birthAS, LocalDate.now(), period.getYears(), period.getMonths(), period.getDays());
+	}
+	@Test
+	void instantTest() {
+		Instant instant = Instant.now(); 
+		LocalDateTime ltd = LocalDateTime.ofInstant(instant,ZoneId.systemDefault());
+		ZonedDateTime ztd = ZonedDateTime.ofInstant(instant,ZoneId.systemDefault());
+		ztd = ztd.withZoneSameInstant(ZoneId.of("GMT+8"));
+		System.out.printf("instant view %s, LocalDateTime %s, ZonedDayTime %s\n", instant, ltd, ztd);
+	}
+	@Test
+	void zoneIDsTest() {
+		ZonedDateTime ztd = ZonedDateTime.now();
+		for(String zone: ZoneId.getAvailableZoneIds()) {
+			
+			if (zone.toLowerCase().contains("toronto")) {
+				System.out.println(ztd.withZoneSameInstant(ZoneId.of(zone)));
+			}
+		}
 	}
 	
 
