@@ -47,7 +47,7 @@ class DateTimeTests {
 
 	private int getAgeAtDate(LocalDate birthDate, LocalDate atDate) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (int) ChronoUnit.YEARS.between(birthDate, atDate);
 	}
 	
 

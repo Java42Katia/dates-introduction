@@ -8,7 +8,7 @@ public class NextFriday13Adjuster implements TemporalAdjuster {
 	@Override
 	public Temporal adjustInto(Temporal temporal) {
 		// TODO Auto-generated method stub
-		return null;
+		return temporal.range(null);
 	}
 
 }
